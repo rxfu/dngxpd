@@ -1,0 +1,19 @@
+{
+  "name": "dngxpd",
+  "version": "1.0.0",
+  "description": "The Dialects of North Guangxi Phonetic Database",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dialect",
+    "phonetic",
+    "North Guangxi"
+  ],
+  "author": "FuRongxin",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^29.1.6"
+  }
+}
