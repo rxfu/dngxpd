@@ -1,19 +1,46 @@
 {
   "name": "dngxpd",
+  "productName": "有声语料库",
   "version": "1.0.0",
-  "description": "The Dialects of North Guangxi Phonetic Database",
-  "main": "main.js",
+  "description": "桂北平话（土话）有声语料库",
+  "main": ".vite/build/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make --platform=win32 --arch=ia32",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/plugin-vite": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "electron": "30.0.1",
+    "postcss-loader": "^8.1.1",
+    "tailwindcss": "^3.4.3",
+    "vite": "^5.2.10"
   },
   "keywords": [
     "dialect",
     "phonetic",
     "North Guangxi"
   ],
-  "author": "FuRongxin",
+  "author": {
+    "name": "FuRongxin",
+    "email": "rxfu@mailbox.gxnu.edu.cn"
+  },
   "license": "MIT",
-  "devDependencies": {
-    "electron": "^29.1.6"
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "sqlite3": "^5.1.7",
+    "vue": "^3.4.25"
   }
 }
