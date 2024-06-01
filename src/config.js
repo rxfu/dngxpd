@@ -4,8 +4,7 @@ const {app, ipcMain} = require('electron');
 
 export function handleConfigApi() {
     ipcMain.handle('getConfig', (event, params) => {
-        // const configPath = path.join(app.getPath('exe'), 'config.json')
-        const configPath = 'D:\\projects\\electron\\dngxpd\\config.json'
+        const configPath = path.join(path.dirname(app.getAppPath()), 'config.json');
 
         return new Promise((res, rej) => {
             fs.readFile(configPath, 'utf-8', (err, data) => {

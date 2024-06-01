@@ -71,7 +71,7 @@ export function handleDatabaseApi() {
                 SUM(CASE WHEN type = '单字' THEN amount ELSE 0 END) as dz, 
                 SUM(CASE WHEN type = '词汇' THEN amount ELSE 0 END) as ch, 
                 SUM(CASE WHEN type = '语法' THEN amount ELSE 0 END) as yf, 
-                SUM(CASE WHEN type = '口头文化' THEN amount ELSE 0 END) as ktwh 
+                SUM(CASE WHEN type = '长篇语料' THEN amount ELSE 0 END) as cpyl 
                 FROM (SELECT zone, type, ord_zone, ord_type, COUNT(*) AS amount FROM records GROUP BY zone, type) 
                 GROUP BY zone
                 ORDER BY ord_zone, ord_type`;

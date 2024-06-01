@@ -1,7 +1,9 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
-const path = require('node:path');
+import {handleHelperApi} from "./helper";
 import {handleDatabaseApi} from "./db";
 import {handleConfigApi} from "./config";
+
+const {app, BrowserWindow, ipcMain} = require('electron');
+const path = require('node:path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -11,13 +13,13 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 1024,
-        height: 768,
+        // width: 1024,
+        // height: 768,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: true,
-            webSecurity: false
+            webSecurity: true
         },
         autoHideMenuBar: true
     });
@@ -29,8 +31,10 @@ const createWindow = () => {
         mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
     }
 
+    mainWindow.maximize();
+
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -41,6 +45,7 @@ app.whenReady().then(() => {
 
     handleConfigApi();
     handleDatabaseApi();
+    handleHelperApi();
 
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

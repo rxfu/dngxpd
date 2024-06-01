@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'Qi';
+        font-style: normal;
+        font-display: swap;
+        src: url("../font/方正启体简体.ttf") format('truetype');
+    }
+}
+
+@layer utilities {
+    .gradient {
+        background-size: 1%;
+        background-color: blueviolet;
+    }
+}

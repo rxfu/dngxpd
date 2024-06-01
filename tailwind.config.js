@@ -5,7 +5,8 @@ module.exports = {
         container: {
             center: true,
         },
-        extend: {},
+        fontFamily: {'qi': 'Qi'},
+        extend: {}
     },
     plugins: [require('@tailwindcss/forms')],
 }

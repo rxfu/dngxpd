@@ -12,3 +12,7 @@ contextBridge.exposeInMainWorld('db', {
 contextBridge.exposeInMainWorld('config', {
     getConfig: () => ipcRenderer.invoke('getConfig'),
 });
+
+contextBridge.exposeInMainWorld('helper', {
+    getBasePath: () => ipcRenderer.invoke('getBasePath'),
+});
