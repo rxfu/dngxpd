@@ -20,6 +20,7 @@ const totalDz = ref(null);
 const totalCh = ref(null);
 const totalYf = ref(null);
 const totalCpyl = ref(null);
+let refreshKey = ref(0);
 
 onMounted(async () => {
   window.addEventListener('keyup', (event) => {
@@ -93,6 +94,8 @@ async function search() {
     })
 
     console.log('result:', result.value);
+
+    refreshKey++;
   } catch (error) {
     console.error(error);
   }
@@ -168,107 +171,112 @@ async function search() {
     </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
       <div class="w-full overflow-x-auto">
-        <table class="w-full" v-if="result">
-          <thead>
-          <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b">
-            <th class="px-4 py-3">编号</th>
-            <th class="px-4 py-3">方言点</th>
-            <th class="px-4 py-3">类型</th>
-            <th class="px-4 py-3">关键词</th>
-            <th class="px-4 py-3">有声语料</th>
-          </tr>
-          </thead>
-          <tbody class="bg-white">
-          <tr class="text-gray-700 hover:bg-blue-100 hover:font-semibold" v-for="(row,index) in result" :key="index">
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.id }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.zone }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.type }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.keyword }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>
-                <audio preload="auto" controls>
-                  <source :src="row.path" type="audio/wav"/>
-                </audio>
-              </p>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="w-full" v-else-if="overall">
-          <caption class="caption-top text-gray-600 px-4 pb-3">桂北平话（土话）有声语料库语料数据统计表</caption>
-          <thead>
-          <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b">
-            <th class="px-4 py-3">方言点</th>
-            <th class="px-4 py-3">单字</th>
-            <th class="px-4 py-3">词汇</th>
-            <th class="px-4 py-3">语法</th>
-            <th class="px-4 py-3">长篇语料</th>
-            <th class="px-4 py-3">合计</th>
-          </tr>
-          </thead>
-          <tbody class="bg-white">
-          <tr class="text-gray-700 hover:bg-blue-100 hover:font-semibold" v-for="(row,index) in overall" :key="index">
-            <td class="px-4 py-3 border-b">
-              <p><strong>{{ row.zone }}</strong></p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.dz }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.ch }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.yf }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.cpyl }}</p>
-            </td>
-            <td class="px-4 py-3 border-b">
-              <p>{{ row.dz + row.ch + row.yf + row.cpyl }}</p>
-            </td>
-          </tr>
-          </tbody>
-          <tfoot>
-          <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase">
-            <th class="px-4 py-3">总计</th>
-            <th class="px-4 py-3">{{ totalDz }}</th>
-            <th class="px-4 py-3">{{ totalCh }}</th>
-            <th class="px-4 py-3">{{ totalYf }}</th>
-            <th class="px-4 py-3">{{ totalCpyl }}</th>
-            <th class="px-4 py-3">{{ totalDz + totalCh + totalYf + totalCpyl }}</th>
-          </tr>
-          </tfoot>
-        </table>
+        <div v-if="result" :key="refreshKey">
+          <RecycleScroller :items="result" :item-size="48">
+            <template #before>
+              <div
+                  class="grid grid-cols-12 text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b">
+                <div class="col-span-2 px-4 py-3">编号</div>
+                <div class="col-span-2 px-4 py-3">方言点</div>
+                <div class="col-span-2 px-4 py-3">类型</div>
+                <div class="col-span-2 px-4 py-3">关键词</div>
+                <div class="col-span-4 px-4 py-3">有声语料</div>
+              </div>
+            </template>
+            <template v-slot="{item}">
+              <div class="grid grid-cols-12 items-center text-gray-700 hover:bg-blue-100 hover:font-semibold border-b">
+                <div class="col-span-2 px-4 py-3">
+                  <p>{{ item.id }}</p>
+                </div>
+                <div class="col-span-2 px-4 py-3">
+                  <p>{{ item.zone }}</p>
+                </div>
+                <div class="col-span-2 px-4 py-3">
+                  <p>{{ item.type }}</p>
+                </div>
+                <div class="col-span-2 px-4 py-3">
+                  <p>{{ item.keyword }}</p>
+                </div>
+                <div class="col-span-4 px-4 py-3">
+                  <p>
+                    <audio preload="auto" controls>
+                      <source :src="item.path" type="audio/wav"/>
+                    </audio>
+                  </p>
+                </div>
+              </div>
+            </template>
+          </RecycleScroller>
+        </div>
+        <div v-else-if="overall">
+          <blockquote
+              class="container relative my-4 p-8 text-lg rounded-2xl border-dashed border-2 bg-sky-100 text-gray-900 border-sky-500 quote">
+            <h2 class="text-center text-2xl/loose font-bold">桂北平话（土话）有声语料库系统使用说明</h2>
+            <ol class="list-decimal px-8">
+              <li class="py-2">
+                本检索系统仅提供方言点和类型检索，方言点共12个，类型共4种。
+              </li>
+              <li class="py-2">
+                查询关键字为有声语料例字。
+              </li>
+              <li class="py-2">
+                查询系统为模糊查询，只要例字中包含查询关键字都能在结果中显示出来。若不输入关键字，则默认为对应方言点和类型的全部有声语料查询。
+              </li>
+              <li class="py-2">
+                查询结果为列表形式，可直接播放有声语料。
+              </li>
+            </ol>
+          </blockquote>
+
+          <h1 class="text-lg text-center text-gray-600 px-4 pb-3">桂北平话（土话）有声语料库语料数据统计表</h1>
+          <table class="w-full">
+            <thead>
+            <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b">
+              <th class="px-4 py-3">方言点</th>
+              <th class="px-4 py-3">单字</th>
+              <th class="px-4 py-3">词汇</th>
+              <th class="px-4 py-3">语法</th>
+              <th class="px-4 py-3">长篇语料</th>
+              <th class="px-4 py-3">合计</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white">
+            <tr class="text-gray-700 hover:bg-blue-100 hover:font-semibold" v-for="(row,index) in overall" :key="index">
+              <td class="px-4 py-3 border-b">
+                <p><strong>{{ row.zone }}</strong></p>
+              </td>
+              <td class="px-4 py-3 border-b">
+                <p>{{ row.dz }}</p>
+              </td>
+              <td class="px-4 py-3 border-b">
+                <p>{{ row.ch }}</p>
+              </td>
+              <td class="px-4 py-3 border-b">
+                <p>{{ row.yf }}</p>
+              </td>
+              <td class="px-4 py-3 border-b">
+                <p>{{ row.cpyl }}</p>
+              </td>
+              <td class="px-4 py-3 border-b">
+                <p>{{ row.dz + row.ch + row.yf + row.cpyl }}</p>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase">
+              <th class="px-4 py-3">总计</th>
+              <th class="px-4 py-3">{{ totalDz }}</th>
+              <th class="px-4 py-3">{{ totalCh }}</th>
+              <th class="px-4 py-3">{{ totalYf }}</th>
+              <th class="px-4 py-3">{{ totalCpyl }}</th>
+              <th class="px-4 py-3">{{ totalDz + totalCh + totalYf + totalCpyl }}</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-  <blockquote
-      class="container relative mt-12 p-8 text-xl rounded-2xl border-dashed border-2 bg-sky-100 text-gray-900 border-sky-500 quote"
-      v-if="overall">
-    <h2 class="text-center text-2xl/loose font-bold">桂北平话（土话）有声语料库系统使用说明</h2>
-    <ol class="list-decimal px-8">
-      <li class="py-2">
-        本检索系统仅提供方言点和类型检索，方言点共12个，类型共4种。
-      </li>
-      <li class="py-2">
-        查询关键字为有声语料例字。
-      </li>
-      <li class="py-2">
-        查询系统为模糊查询，只要例字中包含查询关键字都能在结果中显示出来。若不输入关键字，则默认为对应方言点和类型的全部有声语料查询。
-      </li>
-      <li class="py-2">
-        查询结果为列表形式，可直接播放有声语料。
-      </li>
-    </ol>
-  </blockquote>
 </template>
 
 <style scoped>
