@@ -21,6 +21,7 @@ const totalCh = ref(null);
 const totalYf = ref(null);
 const totalCpyl = ref(null);
 let refreshKey = ref(0);
+const scroller = ref(null);
 
 onMounted(async () => {
   window.addEventListener('keyup', (event) => {
@@ -60,7 +61,6 @@ onMounted(async () => {
     totalCpyl.value = Object.values(overall.value).reduce((sum, item) => {
       return sum + item.cpyl
     }, 0);
-
   } catch (error) {
     console.error(error);
   }
@@ -112,8 +112,6 @@ async function search() {
     <div class="container mx-auto backdrop-blur-sm bg-white/30 shadow-2xl rounded-lg">
       <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div class="col-span-full">
-          <!--        <label for="keyword" class="block text-sm font-bold leading-6 text-gray-900">检索词</label>-->
-          <!--        <div class="mt-2">-->
           <div class="relative flex w-full flex-wrap items-stretch">
             <input type="text" name="keyword" v-model="keyword" placeholder="请输入有声语料例字词进行检索"
                    autocomplete="keyword"
@@ -170,9 +168,10 @@ async function search() {
       <h4>共检索到 <span class="font-semibold text-red-600">{{ result.length }}</span> 条符合条件的有声语料数据</h4>
     </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
-      <div class="w-full overflow-x-auto">
+      <div class="w-full overflow-x-auto h-screen">
         <div v-if="result" :key="refreshKey">
-          <RecycleScroller :items="result" :item-size="48">
+          <RecycleScroller :items="result" :item-size="50" key-field="id" page-mode :emit-update="true" class="h-full"
+                           :buffer="10000">
             <template #before>
               <div
                   class="grid grid-cols-12 text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b">
