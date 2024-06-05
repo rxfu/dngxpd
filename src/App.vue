@@ -21,7 +21,6 @@ const totalCh = ref(null);
 const totalYf = ref(null);
 const totalCpyl = ref(null);
 let refreshKey = ref(0);
-const scroller = ref(null);
 
 onMounted(async () => {
   window.addEventListener('keyup', (event) => {
