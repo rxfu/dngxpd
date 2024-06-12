@@ -167,7 +167,7 @@ async function search() {
       <h4>共检索到 <span class="font-semibold text-red-600">{{ result.length }}</span> 条符合条件的有声语料数据</h4>
     </div>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
-      <div class="w-full overflow-x-auto h-screen">
+      <div class="w-full overflow-x-auto">
         <div v-if="result" :key="refreshKey">
           <RecycleScroller :items="result" :item-size="50" key-field="id" page-mode :emit-update="true" class="h-full"
                            :buffer="10000">
